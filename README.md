@@ -1,70 +1,198 @@
-# Getting Started with Create React App
+# yarn 설치
+```
+npm i -g yarn
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# [yarn] run start
+```
+yarn start
+```
 
-## Available Scripts
+# [yarn] redux 설치
+```
+yarn add redux
+```
 
-In the project directory, you can run:
+# 순수 HTML & JS - NPM 모듈 참조
+순수 html 자바스크립트에서 npm module을 사용하려면
+선언한 script에 type을 module로 지정해줘야 하고,
+import문을 통해 모듈을 참조할 경우 해당 디렉토리를 절대 경로로 참조해야 한다.
 
-### `npm start`
+[ vanila.html ]
+```html
+  <script type="module" src="static/vanila.js" ></script>
+```
+[ vanila.js ]
+```js
+import { createStore } from "/node_modules/redux/dist/redux.mjs"
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# redux
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+ - createStore
+ - reducer
+ - getState
+ - dispatch
+ - subscribe
 
-### `npm test`
+## store & reducer
+redux의 store는 state를 저장하는 곳이다.
+state란 변경될 수 있는 data를 말한다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+redux에는 createStore라는 함수가 존재한다.
 
-### `npm run build`
+여기서 말하는 store란 기본적으로 state data를 넣을 수 있는 장소를 생성한다.
+리덕스는 state data를 관리하는데 도와주는 역할을 하기 위해 만들어졌다.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```js
+import { createStore } from "/node_modules/redux/dist/redux.mjs"
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+const countModifier = (state = 0) => {
+  return ++state;
+}
+const countStore = createStore(countModifier)
+console.log(countStore.getState())
+```
+위와같이 createStore()함수를 통해 store를 생성하고 매개변수로 reducer함수를 전달한다.   
+`reducer함수는 state와 action을 전달받아 새로운 state를 반환해준다.`    
 
-### `npm run eject`
+## action
+action은 실행할 기능을 정의하는 객체이다.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+action은 아래와 같은 객체 형태이다.
+```json
+  {type:"ADD"}
+  {type:"MINUS"}
+```
+우리는 전달받은 action에 type속성을 통해 어떤 작업을 할지 확인할 수 있다.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## dispatch
+그렇다면 action은 어떻게 전달할 까?
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+그것은 바로 생성한 store로부터 호출하는 dispatch함수이다.   
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```js
+import { createStore } from "/node_modules/redux/dist/redux.mjs"
 
-## Learn More
+const countModifier = (state = 0, action) => {
+  console.log(action.type) // ADD를 출력한다.
+  return ++state;
+}
+const countStore = createStore(countModifier)
+countStore.disptch({type:"ADD"})
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+이렇게 전달받은 action의 type속성을 통해 어떤 동작을 할지 정할 수 있게 된다.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```js
+import { createStore } from "/node_modules/redux/dist/redux.mjs"
 
-### Code Splitting
+const countModifier = (count = 0, action) => {
+  if(action.type === "ADD") {
+    return ++count;
+  } 
+  if(action.type === "MINUS") {
+    return --count;
+  }
+  return count;
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+const countStore = createStore(countModifier);
+countStore.dispatch({type:"ADD"})
+countStore.dispatch({type:"ADD"})
+countStore.dispatch({type:"ADD"})
+countStore.dispatch({type:"MINUS"})
+console.log(countStore.getState()) // 3 - 1 이므로 2가 출력된다.
+```
+즉, dispatch는 action객체의 전달 뿐만 아니라 전달 후 
+createStore에 넘긴 reducer를 함께  호출한다.
 
-### Analyzing the Bundle Size
+```js
+function createStore(reducer, preloadedState, enhancer) {
+  /* 생략 */
+  let currentReducer = reducer;
+  let currentState = preloadedState;
+  let isDispatching = false;
+  function ensureCanMutateNextListeners() {}
+  function getState() {}
+  function subscribe(listener) {}
+  function dispatch(action) {
+    /* 생략 */
+    try {
+      isDispatching = true;
+      currentState = currentReducer(currentState, action);
+    } finally {
+      isDispatching = false;
+    }
+    /* 생략 */
+  }
+```
+위와 같이 disptch는 createStore의 소속이며, dispatch가 호출 되면 전달받은 reducer함수를 action객체를 전달하여 실행한다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+## subscribe
+store에 변화를 감지하여 매개변수로 전달받은 함수를 호출한다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```js
+import { createStore } from "/node_modules/redux/dist/redux.mjs"
 
-### Advanced Configuration
+const countModifier = (count = 0, action) => {
+  if(action.type === "ADD") {
+    return ++count;
+  } 
+  if(action.type === "MINUS") {
+    return --count;
+  }
+  return count;
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+const countStore = createStore(countModifier);
+countStore.subscribe(()=>{
+  console.log("변경됨!")
+})
+countStore.dispatch({type:"ADD"})
+countStore.dispatch({type:"ADD"})
+countStore.dispatch({type:"ADD"})
+countStore.dispatch({type:"MINUS"})
+console.log(countStore.getState()) // 3 - 1 이므로 2가 출력된다.
+```
 
-### Deployment
+여기서 감지되는 변화 대상은 state를 말한다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+# + TIP) js 값 비교시 자주 사용되는 상수는 const변수에 저장한다.
 
-### `npm run build` fails to minify
+```js
+const constable = (data) => {
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  switch (data) {
+    case "A": console.log("A출력")
+      break;
+    case "B" : console.log("B출력")
+  }
+}
+
+constable("Aa")
+```
+위와 같이 코드를 작성하면 오류가 발생하지 않는다.
+A를 입력해야하는데 실수로 소문자 a가 함께 말려들어갔다.
+
+만약 이것을 상수화 한다면 컴파일 시점에서 오류를 확인할 수 있다.
+
+```js
+const A = "A";
+const B = "B";
+const constable = (data) => {
+
+  switch (data) {
+    case "A": console.log("A출력")
+      break;
+    case "B" : console.log("B출력")
+  }
+}
+
+constable(A)
+constable(Aa) //오류 발생
+constable(B)
+constable(Bb) //오류 발생
+```
