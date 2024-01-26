@@ -7,6 +7,12 @@ const ul = document.querySelector("ul")
 const ADD_TODO="ADD_TODO"
 const DEL_TODO="DEL_TODO"
 
+const addToDo = toDo => {
+  return {type:ADD_TODO, data:toDo}
+}
+const deleteToDo = id => {
+  return {id: id, type:DEL_TODO}
+}
 
 const reducer = (state = [], action) => {
   switch (action.type) {
@@ -22,9 +28,9 @@ const store = createStore(reducer)
 
 store.subscribe(()=>{console.log(store.getState())})
 
-const deleteToDo = e => {
+const dispatchDeleteToDo = e => {
   console.log(e.target.parentNode.id)
-  store.dispatch({id: e.target.parentNode.id, type:DEL_TODO})
+  store.dispatch(deleteToDo(e.target.parentNode))
 }
 
 const paintToDos = () => {
@@ -35,7 +41,7 @@ const paintToDos = () => {
     const li = document.createElement("li");
     const delBtn = document.createElement("button")
     delBtn.innerText="DEL"
-    delBtn.addEventListener("click", deleteToDo)
+    delBtn.addEventListener("click", dispatchDeleteToDo)
     li.id = toDo.id;
     li.innerText = toDo.data;
     li.appendChild(delBtn)
@@ -46,15 +52,15 @@ const paintToDos = () => {
 
 store.subscribe(paintToDos)
 
-const addToDo = toDo => {
-  store.dispatch({type:ADD_TODO, data:toDo})
+const dispatchAddToDo = toDo => {
+  store.dispatch(addToDo(toDo))
 }
 
 const onSubmit = e => {
   e.preventDefault();
   const toDo = input.value;
   input.value = "";
-  addToDo(toDo)
+  dispatchAddToDo(toDo)
 }
 
 
