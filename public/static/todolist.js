@@ -7,17 +7,23 @@ const ul = document.querySelector("ul")
 const ADD_TODO="ADD_TODO"
 const DEL_TODO="DEL_TODO"
 
+const subscribe = () => {
+  console.log(store.getState())
+}
 const reducer = (state = [], action) => {
   switch (action.type) {
     case ADD_TODO:
-      return []
+      state.push({data: action.data})
+      return state
       case DEL_TODO:
-      return []
+      state.remove(action.data)
+      return state
     default:
       return state;
   }
 }
 const store = createStore(reducer)
+store.subscribe(subscribe)
 
 const createToDo = toDo => {
   console.log("createToDo")
@@ -33,5 +39,6 @@ const onSubmit = e => {
   createToDo(toDo)
   store.dispatch({type:ADD_TODO, data:toDo})
 }
+
 
 form.addEventListener("submit", onSubmit);
