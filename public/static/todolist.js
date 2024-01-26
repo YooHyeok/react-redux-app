@@ -7,9 +7,16 @@ const ul = document.querySelector("ul")
 const ADD_TODO="ADD_TODO"
 const DEL_TODO="DEL_TODO"
 
-const subscribe = () => {
-  console.log(store.getState())
+const paintToDos = () => {
+  const toDos = store.getState()
+  ul.innerHTML = ""
+  toDos.forEach(toDo => {
+    const li = document.createElement("li");
+    li.innerText = toDo.data;
+    ul.appendChild(li);
+  });
 }
+
 const reducer = (state = [], action) => {
   switch (action.type) {
     case ADD_TODO:
@@ -22,21 +29,17 @@ const reducer = (state = [], action) => {
   }
 }
 const store = createStore(reducer)
-store.subscribe(subscribe)
+store.subscribe(paintToDos)
 
-const createToDo = toDo => {
-  console.log("createToDo")
-  const li = document.createElement("li");
-  li.innerText = toDo;
-  ul.appendChild(li);
+const addToDo = toDo => {
+  store.dispatch({type:ADD_TODO, data:toDo})
 }
 
 const onSubmit = e => {
   e.preventDefault();
   const toDo = input.value;
   input.value = "";
-  createToDo(toDo)
-  store.dispatch({type:ADD_TODO, data:toDo})
+  addToDo(toDo)
 }
 
 
