@@ -196,3 +196,26 @@ constable(Aa) //오류 발생
 constable(B)
 constable(Bb) //오류 발생
 ```
+
+# never mutate state
+기본적으로 redux의 state는 react와 마찬가지로 read-only이다.
+따라서 수정시 state값을 mutate 하지 않는다.
+이는 redux는 주로 react에서 사용하기 때문이다.
+
+mutation이란 아래의 코드형태로 데이터를 변경시키는 것이다.
+```js
+const friends = ["dal", "hae", "nick", "hyeok"]
+friends.push("yoo")
+friends.remove("nick")
+```
+기존 배열등의 오브젝트에 추가/삭제 하여 수정 하는방식이다.
+
+상태를 수정하는것이 아닌 새로운 Objects를 리턴하여 상태를 변경한다.
+
+```js
+let friends = ["dal", "hae", "nick", "hyeok"]
+friends = [...friends, "yoo"]
+friends = friends.filter((f)=> {return f !== "nick" })
+```
+
+단, CDN을 사용하는 pure한 js에서는 추가/삭제에 대한 컬렉션의 함수로 수정해도 무관하다.
