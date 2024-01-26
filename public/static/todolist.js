@@ -13,8 +13,7 @@ const subscribe = () => {
 const reducer = (state = [], action) => {
   switch (action.type) {
     case ADD_TODO:
-      state.push({data: action.data})
-      return state
+      return [...state, {id: Date.now(), data:action.data}]
       case DEL_TODO:
       state.remove(action.data)
       return state
