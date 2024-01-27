@@ -1,19 +1,22 @@
-# yarn 설치
+
+# Pure Redux
+
+## yarn 설치
 ```
 npm i -g yarn
 ```
 
-# [yarn] run start
+## [yarn] run start
 ```
 yarn start
 ```
 
-# [yarn] redux 설치
+## [yarn] redux 설치
 ```
 yarn add redux
 ```
 
-# 순수 HTML & JS - NPM 모듈 참조
+## 순수 HTML & JS - NPM 모듈 참조
 순수 html 자바스크립트에서 npm module을 사용하려면
 선언한 script에 type을 module로 지정해줘야 하고,
 import문을 통해 모듈을 참조할 경우 해당 디렉토리를 절대 경로로 참조해야 한다.
@@ -27,7 +30,7 @@ import문을 통해 모듈을 참조할 경우 해당 디렉토리를 절대 경
 import { createStore } from "/node_modules/redux/dist/redux.mjs"
 ```
 
-# redux
+## redux
 
  - createStore
  - reducer
@@ -160,7 +163,7 @@ console.log(countStore.getState()) // 3 - 1 이므로 2가 출력된다.
 
 여기서 감지되는 변화 대상은 state를 말한다.
 
-# + TIP) js 값 비교시 자주 사용되는 상수는 const변수에 저장한다.
+## + TIP) js 값 비교시 자주 사용되는 상수는 const변수에 저장한다.
 
 ```js
 const constable = (data) => {
@@ -197,7 +200,7 @@ constable(B)
 constable(Bb) //오류 발생
 ```
 
-# never mutate state
+## never mutate state
 기본적으로 redux의 state는 react와 마찬가지로 read-only이다.
 따라서 수정시 state값을 mutate 하지 않는다.
 이는 redux는 주로 react에서 사용하기 때문이다.
@@ -219,3 +222,11 @@ friends = friends.filter((f)=> {return f !== "nick" })
 ```
 
 단, CDN을 사용하는 pure한 js에서는 추가/삭제에 대한 컬렉션의 함수로 수정해도 무관하다.
+
+# REACT REDUX
+
+# [yarn] react-redux 설치
+
+```text/plain
+> yarn add react-redux
+```
