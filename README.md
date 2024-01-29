@@ -225,8 +225,49 @@ friends = friends.filter((f)=> {return f !== "nick" })
 
 # REACT REDUX
 
-# [yarn] react-redux 설치
+## [yarn] react-redux 설치
 
 ```text/plain
 > yarn add react-redux
+```
+## store와 component간 연결 (Provider, connect, mapStateProps)
+
+먼저 Provider를 통해 store객체를 전역으로 공급한다.
+
+```js
+import React from 'react';
+import ReactDOM from "react-dom/client"
+import App from "./component/App"
+import { Provider } from 'react-redux';
+import store from './redux/store';
+ReactDOM 
+      .createRoot(document.getElementById('root'))
+      .render(
+            <Provider store={store}>
+                  <App/>
+            </Provider>
+      )
+```
+
+connect함수는 컴포넌트로 전달하는 props에 특정 속성 추가될 수 있도록 허용해준다.
+매개변수로 콜백 함수를 받는데, 구현할 함수는 mapStateProps라고 부른다.
+구현할 mapStateProps는 매개변수로 redux store로부터 state와 dispatch를 가져오고
+return을 통해 현재 컴포넌트의 props에 넣는다.
+
+```js
+import { connect } from "react-redux";
+
+
+
+function Home (props) {
+  console.log(props) //{sexy:true, dispatch: f}
+  
+  return "HOME"
+}
+
+export default connect((state, dispatch)=>{  
+  console.log(state, dispatch)
+  return {sexy:true}
+}) (Home);
+
 ```
