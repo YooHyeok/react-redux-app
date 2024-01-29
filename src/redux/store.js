@@ -3,13 +3,15 @@ import { createStore } from "redux"
 const ADD = "ADD"
 const DELETE = "DELETE"
 
-export const addToDo = (data) => {
+const addToDo = (data) => {
+  console.log(data)
   return {
     type: ADD,
     data
   }
 }
-export const deleteToDo = (id) => {
+
+const deleteToDo = (id) => {
   return {
     type: DELETE,
     id
@@ -30,5 +32,10 @@ const reducer = (state=[] , action) => {
 const store = createStore(reducer)
 
 // store.subscribe()
+
+export const actionCreator = {
+  addToDo,
+  deleteToDo
+}
 
 export default store;
