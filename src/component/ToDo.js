@@ -1,21 +1,21 @@
 import { connect } from "react-redux"
 import { actionCreator } from "../redux/store"
 
-function ToDo({data, id, deleteToDo}) {
+function ToDo({data, deleteToDo}) {
   console.log("ToDo렌더링")
   function onClick() {
-    deleteToDo(id);
+    deleteToDo();
   }
   return (
     <li>
-      {data} <button id={id} onClick={onClick}>X</button>
+      {data} <button onClick={onClick}>X</button>
     </li>
   )
 }
 
 function mapDisptatchProps(dispatch, ownProps) {
   return {
-    deleteToDo: (id) => dispatch(actionCreator.deleteToDo(id))
+    deleteToDo: () => dispatch(actionCreator.deleteToDo(ownProps.id))
   }
 }
 
