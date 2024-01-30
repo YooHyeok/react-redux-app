@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import { actionCreator } from "../redux/store";
+import { actionCreator } from "../redux/storeNew";
 import ToDo from "../component/ToDo";
 
 function Home ({toDos, addToDo}) {
