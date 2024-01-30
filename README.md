@@ -295,3 +295,15 @@ export default connect(mapStateToProps, (dispatch, ownProps) => {
 }) (Home);
 ```
 위와 같이 Provider된 store로부터 받아온 dispatch 함수 자체를 객체로 감싸 반환하면, 해당 함수를 props로 재전달받아 컴포넌트에서 호출할 수 있게 된다.
+
+# Redux-ToolKit
+더 적은 양의 Redux코드를 짤 수 있도록 도와준다.
+
+### `@reduxjs/toolkit`
+
+```
+> npm install @reduxjs/toolkit
+```
+```
+> yarn add @reduxjs/toolkit
+```
