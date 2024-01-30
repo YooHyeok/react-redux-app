@@ -12,9 +12,10 @@ const addToDo = (data) => {
 }
 
 const deleteToDo = (id) => {
+  console.log(id)
   return {
     type: DELETE,
-    id
+    id: parseInt(id)
   }
 }
 
