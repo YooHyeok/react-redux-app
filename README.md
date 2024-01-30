@@ -230,7 +230,7 @@ friends = friends.filter((f)=> {return f !== "nick" })
 ```text/plain
 > yarn add react-redux
 ```
-## store와 component간 연결 (Provider, connect, mapStateProps)
+## store와 component간 연결 (Provider, connect, mapStateToProps)
 
 
 ### Provider
@@ -250,10 +250,10 @@ ReactDOM
       )
 ```
 
-### connect & mapStateProps
+### connect & mapStateToProps
 connect함수는 컴포넌트로 전달하는 props에 특정 속성 추가될 수 있도록 허용해준다.
-매개변수로 콜백 함수를 받는데, 구현할 함수는 mapStateProps라고 부른다.
-구현할 mapStateProps는 매개변수로 redux store로부터 state와 기존 props를 가져오고
+매개변수로 콜백 함수를 받는데, 구현할 함수는 mapStateToProps라고 부른다.
+구현할 mapStateToProps는 매개변수로 redux store로부터 state와 기존 props를 가져오고
 return을 통해 현재 컴포넌트의 props에 특정 속성을 넣을 수 있다.
 getState()를 통해  state를 가져오는것이라고 생각할 수 있다.
 
@@ -277,18 +277,18 @@ export default connect((state, ownProps)=>{
 
 ### connect & mapDisptatchProps
 
-connect의 두번째 매개변수로는 mapDispatchProps함수를 구현한 콜백함수를 넘긴다.
+connect의 두번째 매개변수로는 mapDispatchToProps함수를 구현한 콜백함수를 넘긴다.
 이 함수는 sotre로 부터 dispatch와 고유한 props를 제공받는다.
-mapStateProps와 마찬가지로 return을 통해 현재 컴포넌트에게 전달할 props에 속성을 추가할 수 있다.
+mapStateToProps와 마찬가지로 return을 통해 현재 컴포넌트에게 전달할 props에 속성을 추가할 수 있다.
 
 ```js
 function Home ({dispatch}) {
   
-  console.log(dispatch) //mapDispatchProps에서 반환한 함수가 출력됨
+  console.log(dispatch) //mapDispatchToProps에서 반환한 함수가 출력됨
 
   return "HOME"
 }
-export default connect(mapStateProps, (dispatch, ownProps) => {
+export default connect(mapStateToProps, (dispatch, ownProps) => {
   return {
     dispatch
   }

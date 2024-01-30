@@ -16,10 +16,10 @@ function ToDo({data, id, deleteToDo}) {
   )
 }
 
-function mapDisptatchProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
     deleteToDo: () => dispatch(actionCreator.deleteToDo(ownProps.id))
   }
 }
 
-export default connect(null, mapDisptatchProps) (ToDo)
+export default connect(null, mapDispatchToProps) (ToDo)

@@ -30,14 +30,14 @@ function Home ({toDos, addToDo}) {
   )
 }
 
-function mapStateProps(state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {toDos: state}
 }
 
-function mapDisptatchProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
     addToDo: (data) => dispatch(actionCreator.addToDo(data))
   }
 }
 
-export default connect(mapStateProps, mapDisptatchProps) (Home);
+export default connect(mapStateToProps, mapDispatchToProps) (Home);

@@ -2,10 +2,10 @@ import { connect } from "react-redux"
 import { useParams } from "react-router-dom"
 
 
-function mapStateProps(state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {state}
 }
-export default connect(mapStateProps) (function Detail ({state}) {
+export default connect(mapStateToProps) (function Detail ({state}) {
   const {id} = useParams()
   const toDo = state.find(todo=> todo.id === parseInt(id))
   return (
