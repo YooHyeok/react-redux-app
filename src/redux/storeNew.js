@@ -26,7 +26,7 @@ const deleteToDo = createAction("DELETE");
 
 const reducer = createReducer([], (builder) => {
   builder
-  .addCase(addToDo,(state, action) => [{id: Date.now(), data: action.payload}, ...state])
+  .addCase(addToDo,(state, action) => {state.push({id: Date.now(), data: action.payload})})
   .addCase(deleteToDo,(state, action) => state.filter(el=> el.id !== action.payload))
   }
 )
