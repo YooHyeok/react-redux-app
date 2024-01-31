@@ -19,10 +19,17 @@ const deleteToDo = createAction("DELETE");
   }
 } */
 
-const reducer = createReducer([], {
+/* const reducer = createReducer([], {
   [addToDo] : (state, action) => [{id: Date.now(), data: action.payload}, ...state],
   [deleteToDo] : (state, action) => state.filter(el=> el.id !== action.payload)
-})
+}) */
+
+const reducer = createReducer([], (builder) => {
+  builder
+  .addCase(addToDo,(state, action) => [{id: Date.now(), data: action.payload}, ...state])
+  .addCase(deleteToDo,(state, action) => state.filter(el=> el.id !== action.payload))
+  }
+)
 
 const store = createStore(reducer)
 
