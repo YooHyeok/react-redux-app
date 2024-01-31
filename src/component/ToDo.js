@@ -9,8 +9,9 @@ function ToDo({data, id, deleteToDo}) {
   return (
     <li>
       <Link to={`/${id}`}>
-        {data} <button onClick={onClick}>X</button>
+        {data}
       </Link>
+      <button onClick={onClick}>X</button>
     </li>
   )
 }
