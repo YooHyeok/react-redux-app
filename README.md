@@ -363,7 +363,7 @@ const actionCreator = createAction(type) //매개변수 type에 일일일
 store.dispatch(actionCreator(payload)) //매개변수 payload에 111
 ```
 
-## createReducer
+## createReducer - v1
 
 첫번째 arg는 initialState이다.    
 두번째 arg는 actionHandlers이다.   
@@ -389,3 +389,18 @@ dispacth()에 어떤 createAction함수가 매개값으로 호출됬는지 Objec
 콘솔에서는 위와같이 출력된다.   
 해당 object형태의 key인지 내부적으로 비교하여 매핑되는 메소드를 실행시켜주는 원리인것 같다.
 
+
+``` js
+import { createAction, createReducer } from "@reduxjs/toolkit"
+
+const addToDo = createAction("ADD");
+const deleteToDo = createAction("DELETE");
+
+const reducer = createReducer([], {
+  [addToDo] : (state, action) => [{id: Date.now(), data: action.payload}, ...state],
+  [deleteToDo] : (state, action) => state.filter(el=> el.id !== action.payload)
+  }
+)
+const store = createStore(reducer)
+
+```
