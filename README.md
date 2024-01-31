@@ -362,3 +362,30 @@ const store = createStore(reducer)
 const actionCreator = createAction(type) //매개변수 type에 일일일
 store.dispatch(actionCreator(payload)) //매개변수 payload에 111
 ```
+
+## createReducer
+
+첫번째 arg는 initialState이다.    
+두번째 arg는 actionHandlers이다.   
+initialState는 state의 초기값을 지정해주면 되고,
+actionHandlers은 선언한 createAction함수를 key로 두고 value에 작동할 reducer함수를 지정한다.    
+
+이때 key에 들어오는 값은 createAction함수명이다.    
+key를 [대괄호] 형태로 함수명을 지정해줬는데 이는 js의 computed property name 이라는 문법을 나타낸다.  
+이는 객체의 속성명을 동적으로 생성할 수 있게 해주는 문법이다.   
+지정해주는 함수가 반환하는 값에 따라 동적으로 key값이 지정된다.
+
+dispacth()에 어떤 createAction함수가 매개값으로 호출됬는지 Object형태로 파악하도록 함수의 이름으로 등록해준것같다.
+
+```
+{[object Object]: f}
+```
+```
+{
+  [object Object]: f
+}
+```
+
+콘솔에서는 위와같이 출력된다.   
+해당 object형태의 key인지 내부적으로 비교하여 매핑되는 메소드를 실행시켜주는 원리인것 같다.
+
