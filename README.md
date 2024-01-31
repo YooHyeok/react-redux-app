@@ -307,3 +307,58 @@ export default connect(mapStateToProps, (dispatch, ownProps) => {
 ```
 > yarn add @reduxjs/toolkit
 ```
+
+## createAction
+createAction()를 기본적으로 선언할 때 type과 prepareAction을 매개변수로 받는다.   
+해당 함수의 내부에는 actionCreator(args)함수가 있고, 매개변수 args는 payload값을 전달받는다.   
+actionCreator()는 최종적으로 createAction()에서 받은 type과 payload를 지닌 action객체 {type, payload}를 생성한다. 
+createAction은 최종 반환시 {type,payload} 속성을 가진 객체를 반환하는 actionCreator해당 함수를 반환한다.
+
+dispatch에서 actionCreator 함수 콜백으로 전달하면 reducer에서는 actionCreator함수의 return값을 action으로 받게된다.
+
+따라서 reducer에서는 action에 접근하여 type과 payload를 제공받을 수 있다.
+
+```js
+function createAction(type, prepareAction) {
+  function actionCreator(...args) {
+    if (prepareAction) {
+      let prepared = prepareAction(...args);
+      if (!prepared) {
+        throw new Error(process.env.NODE_ENV === "production" ? formatProdErrorMessage(0) : "prepareAction did not return an object");
+      }
+      return {
+        type,
+        payload: prepared.payload,
+        ..."meta" in prepared && {
+          meta: prepared.meta
+        },
+        ..."error" in prepared && {
+          error: prepared.error
+        }
+      };
+    }
+    return {
+      type,
+      payload: args[0]
+    };
+  }
+  actionCreator.toString = () => `${type}`;
+  actionCreator.type = type;
+  actionCreator.match = (action) => isAction(action) && action.type === type;
+  return actionCreator;
+}
+```
+
+정리하자면 아래와 같다.
+
+```js
+const reducer = (state, action) {
+  console.log(state)
+  console.log(action) // {type:일일일, payload:111} 출력
+  console.log(action.type) //일일일 출력
+  console.log(action.payload) //111 출력
+}
+const store = createStore(reducer)
+const actionCreator = createAction(type) //매개변수 type에 일일일
+store.dispatch(actionCreator(payload)) //매개변수 payload에 111
+```
