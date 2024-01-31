@@ -404,3 +404,23 @@ const reducer = createReducer([], {
 const store = createStore(reducer)
 
 ```
+
+## createReducer - v2
+
+v2부터는 아래와 같은 문법으로 지정해 줘야 한다.
+
+``` js
+import { createAction, createReducer } from "@reduxjs/toolkit"
+
+const addToDo = createAction("ADD");
+const deleteToDo = createAction("DELETE");
+
+const reducer = createReducer([], (builder) => {
+  builder
+  .addCase(addToDo,(state, action) => [{id: Date.now(), data: action.payload}, ...state])
+  .addCase(deleteToDo,(state, action) => state.filter(el=> el.id !== action.payload))
+  }
+)
+const store = createStore(reducer)
+
+```
