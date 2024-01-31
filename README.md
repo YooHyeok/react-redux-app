@@ -424,3 +424,26 @@ const reducer = createReducer([], (builder) => {
 const store = createStore(reducer)
 
 ```
+
+## immer - mutate update
+redux toolkit은 immer 아래에서 작동된다.
+redux툴킷이 mutate한 state 변경사항이 있는것을 자동으로 확인한다.
+즉, state가 mutate한 수정이 발생할 경우 immer에 의해서 mutation하지 않은 수정으로 변경해준다.
+
+```js
+const reducer = createReducer([], (builder) => {
+  builder
+  .addCase(addToDo,(state, action) => {
+    state.push({id: Date.now(), data: action.payload})
+}
+
+)
+  .addCase(deleteToDo,(state, action) => state.filter(el=> el.id !== action.payload))
+  }
+)
+```
+위 코드를 보면 addTo라는 case는 return하지 않는다.
+
+즉, state에 대한 mutate 작업이 있다면 return하지않고,
+mutate하지않은 reducer 함수는 수정한 이후의 state를 return해야한다.
+
