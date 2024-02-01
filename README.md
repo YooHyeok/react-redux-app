@@ -501,3 +501,101 @@ export const actionCreator = {
 
 최종적으로 redux devtools에서 확인하게되면
 action의 이름은 slice에 등록한 name/함수명 으로 확인할 수 있다.
+
+# 추가 팁 combineReducers와 useSelector, useDispatch
+
+## combineReducers
+2개 이상의 reducer를 사용해야 하는 경우에는 combineReducers를 사용한다.
+
+```js
+const allReducer = combineReducers({
+//관리할 리듀서를 입력한다.
+toDos: toDos.reducer,
+toDos2: toDos2.reducer
+})
+const store = configureStore({reducer: allReducer});
+```
+
+아래와 같이 예제를 작성해본다.
+```js
+const toDos = createSlice({
+  name: 'toDosReducer',
+  initialState: [],
+  reducers: {
+    /* 생략 */
+    },
+});
+
+const toDos2 = createSlice({
+  name: 'toDosReducer2',
+  initialState: [],
+  reducers: {
+    /* 생략 */
+    },
+});
+
+// combineReducers 함수를 사용하여 리듀서를 합친다.
+const reducer = combineReducers({
+  toDos: toDos.reducer,
+  toDos2: toDos2.reducer,
+});
+const store = configureStore({reducer})
+
+export const toDosActionCreator = {
+  addToDo: toDos.actions.addToDo,
+  deleteToDo: toDos.actions.deleteToDo
+}
+export const toDos2ActionCreator = {
+  addToDo: toDos2.actions.addToDo,
+  deleteToDo: toDos2.actions.deleteToDo
+}
+
+
+```
+
+컴포넌트의 mapStateProps, mapDispatchProps
+```js
+function mapStateToProps(state, ownProps) {
+  // return {toDos: state.toDos} state.
+  return {
+    toDos: state.toDos,
+    toDos2: state.toDos2,
+  }
+}
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    addToDo: (data) => dispatch(toDosActionCreator.addToDo(data))
+    addToDo2: (data) => dispatch(toDos2ActionCreator.addToDo(data))
+  }
+}
+```
+
+
+## useSelector
+useSelector는 mapStateToPros를 대신할 수 있다.
+데이터가 배열인 경우에는 map으로 꺼낼 때 useSelector로 꺼내온 데이터를 변수로 지정하고 콘솔찍어보면 combineReducers에서 적어놓은 리듀서 이름으로 배열이 만들어져있을것이다.
+const selector = useSelector(state => state)로 빼왔으면
+selector.리듀서이름으로 접근한다.
+
+```js
+export default function Home() {
+  
+  const selector = useSelector(state=>state)
+  const toDos = selector.toDos
+
+}
+```
+
+## useSelector
+useDispatch는 mapDispatchToProps를 대신할 수 있다.
+
+
+```js
+import { actionCreator } from "../redux/store"
+export default function Home({addToDo}) {
+  
+  const dispatch = useDispatch()
+  dispatch(actionCreator.addToDo(data)) //dispatch(/* action */)
+
+}
+```
