@@ -463,3 +463,41 @@ const store = configureStore({reducer})
 configureStore에 등록된 state값과 변동내역을 실시간으로 확인할 수 있고, history를 직접 관리할 수 있으며 dispatch를 직접 제어할 수도 있다.
 
 `https://chromewebstore.google.com/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=ko`
+
+## createSlice
+
+reducer뿐만 아니라 actions도 생성해준다.
+매개변수로 name, initialState, reducers들을 세팅해준다.
+```js
+const toDos = createSlice({
+  name: 'toDosReducer',
+  initialState: [],
+  reducers: {
+    addToDo: (state, action) => {state.push({id: Date.now(), data: action.payload})},
+    deleteToDo: (state, action) => state.filter(el=> el.id !== action.payload)
+  }
+})
+```
+console로 해당 slice를 찍어보면 아래와 같다.
+
+```json
+{
+  name: 'toDosReducer',
+  actions: {addToDo:ff, deleteToDo: f},
+  reducer: f reducer(state, action),
+  /*... 나머지 생략 ...*/
+}
+```
+
+reducers에 등록된 reducer를 configureStore에 등록할때는 reducers가 아닌 reducer로 접근한다    
+action 그 자체로 함수를 가져올 때는 actions를 통해 접근한다.
+
+```js
+export const actionCreator = {
+  addToDo: toDos.actions.addToDo,
+  deleteToDo: toDos.actions.deleteToDo
+}
+```
+
+최종적으로 redux devtools에서 확인하게되면
+action의 이름은 slice에 등록한 name/함수명 으로 확인할 수 있다.
