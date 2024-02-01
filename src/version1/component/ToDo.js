@@ -1,5 +1,5 @@
 import { connect } from "react-redux"
-import { actionCreator } from "../redux/storeNew"
+import { actionCreator } from "../redux/store"
 import { Link } from "react-router-dom";
 
 function ToDo({data, id, deleteToDo}) {

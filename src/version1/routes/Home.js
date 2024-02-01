@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import { actionCreator } from "../redux/storeNew";
+import { actionCreator } from "../redux/store";
 import ToDo from "../component/ToDo";
 
 function Home ({toDos, addToDo}) {
   console.log("Home 렌더링")
   const [data, setData] = useState("")
-
+  
   function onChange(e) {
     setData(e.target.value)
   }
