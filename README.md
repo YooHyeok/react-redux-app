@@ -447,3 +447,19 @@ const reducer = createReducer([], (builder) => {
 즉, state에 대한 mutate 작업이 있다면 return하지않고,
 mutate하지않은 reducer 함수는 수정한 이후의 state를 return해야한다.
 
+## configureStore와 redux devtools
+
+### configureStore
+middleware를 지원하여 개발자에게 조금 더 편리한 기능을 제공해준다.
+
+```js
+import { configureStore, createReducer } from "@reduxjs/toolkit"
+
+const reducer = createReducer(()=>{})
+const store = configureStore({reducer})
+```
+### redux devtools
+
+configureStore에 등록된 state값과 변동내역을 실시간으로 확인할 수 있고, history를 직접 관리할 수 있으며 dispatch를 직접 제어할 수도 있다.
+
+`https://chromewebstore.google.com/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=ko`
