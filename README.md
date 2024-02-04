@@ -1,34 +1,40 @@
 
 # Pure Redux
 
-## yarn 설치
-```
-npm i -g yarn
-```
+## 프로젝트 설정
 
-## [yarn] run start
-```
-yarn start
-```
+<details>
+<summary>[ 설정 상세보기 ]</summary>
+　
 
-## [yarn] redux 설치
-```
-yarn add redux
-```
+* `yarn 설치`
+    ```
+    npm i -g yarn
+    ```
 
-## 순수 HTML & JS - NPM 모듈 참조
-순수 html 자바스크립트에서 npm module을 사용하려면
-선언한 script에 type을 module로 지정해줘야 하고,
-import문을 통해 모듈을 참조할 경우 해당 디렉토리를 절대 경로로 참조해야 한다.
+ * `[yarn] run start`
+    ```
+    yarn start
+    ```
 
-[ vanila.html ]
-```html
-  <script type="module" src="static/vanila.js" ></script>
-```
-[ vanila.js ]
-```js
-import { createStore } from "/node_modules/redux/dist/redux.mjs"
-```
+ * `[yarn] redux 설치`
+    ```
+    yarn add redux
+    ```
+
+  *  `순수 HTML & JS - NPM 모듈 참조`   
+    순수 html 자바스크립트에서 npm module을 사용하려면 선언한 script에 type을 module로 지정해줘야 하고,
+    import문을 통해 모듈을 참조할 경우 해당 디렉토리를 절대 경로로 참조해야 한다.   
+
+      * [ vanila.html ]
+          ```html
+            <script type="module" src="static/vanila.js" ></script>
+          ```
+      * [ vanila.js ]
+          ```js
+          import { createStore } from "/node_modules/redux/dist/redux.mjs"
+          ```
+</details>
 
 ## redux
 
@@ -225,11 +231,11 @@ friends = friends.filter((f)=> {return f !== "nick" })
 
 # REACT REDUX
 
-## [yarn] react-redux 설치
+* ### `[yarn] react-redux 설치`
 
-```text/plain
-> yarn add react-redux
-```
+    ```text/plain
+    > yarn add react-redux
+    ```
 ## store와 component간 연결 (Provider, connect, mapStateToProps)
 
 
@@ -299,14 +305,14 @@ export default connect(mapStateToProps, (dispatch, ownProps) => {
 # Redux-ToolKit
 더 적은 양의 Redux코드를 짤 수 있도록 도와준다.
 
-### `@reduxjs/toolkit`
+* ### `@reduxjs/toolkit`
 
-```
-> npm install @reduxjs/toolkit
-```
-```
-> yarn add @reduxjs/toolkit
-```
+    ```
+    > npm install @reduxjs/toolkit
+    ```
+    ```
+    > yarn add @reduxjs/toolkit
+    ```
 
 ## createAction
 createAction()를 기본적으로 선언할 때 type과 prepareAction을 매개변수로 받는다.   
@@ -592,8 +598,15 @@ useDispatch는 mapDispatchToProps를 대신할 수 있다.
 
 ```js
 import { actionCreator } from "../redux/store"
-export default function Home({addToDo}) {
+export default function Home() {
   
+  const selector = useSelector(state=>state)
+  const toDos = selector.toDos
+
+  return (
+    {toDos.map(el-> el)}
+  )
+
   const dispatch = useDispatch()
   dispatch(actionCreator.addToDo(data)) //dispatch(/* action */)
 
